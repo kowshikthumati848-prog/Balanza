@@ -1,193 +1,179 @@
-BALANZA
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BALANZA | Premium Balanced Sleeper</title>
+    <title>BALANZA | Luxury Balanced Sleeper</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .glass-morphism {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-        }
-        .seat-booked { background-color: #e5e7eb; cursor: not-allowed; }
-        .seat-available { border: 2px solid #1b4332; cursor: pointer; }
-        .seat-available:hover { background-color: #d8f3dc; }
-        .balanza-gradient { background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%); }
+        .balanza-green { background-color: #1b4332; }
+        .text-balanza { color: #1b4332; }
+        .seat { transition: all 0.3s ease; cursor: pointer; border: 2px solid #1b4332; }
+        .seat.selected { background-color: #1b4332; color: white; }
+        .seat.booked { background-color: #e2e8f0; border-color: #cbd5e1; cursor: not-allowed; opacity: 0.6; }
+        .airplane-cabin { border-radius: 8px 30px 30px 8px; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans leading-normal">
+<body class="bg-slate-50 font-sans">
 
-    <nav class="glass-morphism sticky top-0 z-50 border-b border-green-100">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+<div id="app">
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="p-2 bg-green-900 rounded-lg">
-                    <i class="fas fa-bus text-white text-xl"></i>
-                </div>
+                <div class="p-2 balanza-green rounded-lg text-white"><i class="fas fa-bus"></i></div>
                 <div>
-                    <span class="text-2xl font-bold text-green-900 block leading-none">BALANZA</span>
-                    <span class="text-[10px] uppercase tracking-widest font-semibold text-green-700">Balanced • Safe • Modern</span>
+                    <h1 class="text-2xl font-black text-balanza leading-none">BALANZA</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-green-700">Balanced • Safe • Modern</p>
                 </div>
             </div>
-            <div class="hidden lg:flex items-center space-x-8 text-sm font-bold uppercase tracking-wider">
-                <a href="#booking" class="text-green-900 hover:text-green-600">Book Tickets</a>
-                <a href="#safety" class="text-green-900 hover:text-green-600">Safety Tech</a>
-                <a href="#experience" class="text-green-900 hover:text-green-600">The Cabins</a>
-                <button class="border-2 border-green-900 text-green-900 px-6 py-2 rounded-full hover:bg-green-900 hover:text-white transition">My Bookings</button>
+            <div class="hidden md:flex space-x-8 items-center font-bold text-sm uppercase">
+                <a href="#" class="text-balanza">Safety Tech</a>
+                <a href="#" class="text-gray-500 hover:text-balanza">Experience</a>
+                <button class="balanza-green text-white px-6 py-2 rounded-full shadow-lg">Login / Sign Up</button>
             </div>
         </div>
     </nav>
 
-    <header class="balanza-gradient py-20 px-6 text-white relative overflow-hidden">
-        <div class="container mx-auto flex flex-col lg:flex-row items-center relative z-10">
-            <div class="lg:w-1/2 mb-12 lg:mb-0">
-                <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">Life Matters.<br><span class="text-green-300">Travel Balanced.</span></h1>
-                <p class="text-xl opacity-90 mb-8 max-w-lg">Introducing India's first dual-side-balanced sleeper with airplane-style private reclining cabins for the safest 600-800km journeys.</p>
-                <div class="flex space-x-4">
-                    <a href="#booking" class="bg-white text-green-900 px-8 py-4 rounded-xl font-bold shadow-lg hover:bg-green-50 transition">Book Now</a>
-                    <a href="#safety" class="bg-transparent border border-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-green-900 transition">View Safety Features</a>
+    <section class="balanza-green py-12 px-6">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-white text-3xl font-bold mb-8 text-center">India's Safest Overnight Travel</h2>
+            <div class="bg-white p-2 rounded-xl shadow-2xl flex flex-col lg:flex-row gap-2">
+                <div class="flex-1 flex items-center px-4 py-3 border-r border-gray-100">
+                    <i class="fas fa-bus-alt mr-3 text-gray-400"></i>
+                    <input type="text" v-model="search.from" placeholder="From Station" class="w-full outline-none font-medium">
                 </div>
-            </div>
-            <div class="lg:w-1/2">
-                <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=1000" alt="Balanza Bus" class="rounded-3xl shadow-2xl border-4 border-white/20">
-            </div>
-        </div>
-    </header>
-
-    <section id="booking" class="-mt-12 relative z-20 container mx-auto px-6">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 grid lg:grid-cols-4 gap-6 items-end">
-            <div>
-                <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Leaving From</label>
-                <div class="relative">
-                    <i class="fas fa-map-marker-alt absolute left-3 top-4 text-green-700"></i>
-                    <input type="text" placeholder="Hyderabad" class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
+                <div class="flex-1 flex items-center px-4 py-3 border-r border-gray-100">
+                    <i class="fas fa-map-marker-alt mr-3 text-gray-400"></i>
+                    <input type="text" v-model="search.to" placeholder="To Station" class="w-full outline-none font-medium">
                 </div>
-            </div>
-            <div>
-                <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Going To</label>
-                <div class="relative">
-                    <i class="fas fa-route absolute left-3 top-4 text-green-700"></i>
-                    <input type="text" placeholder="Bengaluru" class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
+                <div class="flex-1 flex items-center px-4 py-3">
+                    <i class="fas fa-calendar-alt mr-3 text-gray-400"></i>
+                    <input type="date" class="w-full outline-none font-medium">
                 </div>
-            </div>
-            <div>
-                <label class="text-xs font-bold text-gray-500 uppercase mb-2 block">Travel Date</label>
-                <input type="date" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
-            </div>
-            <button class="bg-orange-500 hover:bg-orange-600 text-white font-black py-4 rounded-lg shadow-lg transform transition active:scale-95 uppercase tracking-widest">
-                Search Balanza
-            </button>
-        </div>
-    </section>
-
-    <section class="py-24 container mx-auto px-6">
-        <div class="flex flex-col lg:flex-row gap-16 items-center">
-            <div class="lg:w-1/2 order-2 lg:order-1">
-                <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100">
-                    <div class="flex justify-between items-center mb-6">
-                        <h4 class="font-bold text-lg">Select Your Recliner Cabin</h4>
-                        <div class="flex space-x-2">
-                            <span class="w-4 h-4 seat-available rounded"></span> <span class="text-xs">Available</span>
-                            <span class="w-4 h-4 bg-green-900 rounded"></span> <span class="text-xs">Selected</span>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-20 bg-gray-50 p-10 rounded-xl relative">
-                        <div class="absolute inset-y-0 left-1/2 w-1 bg-gray-200 -translate-x-1/2"></div>
-                        <div class="space-y-4">
-                            <div class="w-full h-12 seat-available rounded-lg flex items-center justify-center text-xs font-bold">L1</div>
-                            <div class="w-full h-12 seat-available rounded-lg flex items-center justify-center text-xs font-bold">L2</div>
-                            <div class="w-full h-12 bg-green-900 text-white rounded-lg flex items-center justify-center text-xs font-bold">L3</div>
-                            <div class="w-full h-12 seat-available rounded-lg flex items-center justify-center text-xs font-bold">L4</div>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="w-full h-12 seat-available rounded-lg flex items-center justify-center text-xs font-bold">R1</div>
-                            <div class="w-full h-12 seat-booked rounded-lg flex items-center justify-center text-xs font-bold">R2</div>
-                            <div class="w-full h-12 seat-available rounded-lg flex items-center justify-center text-xs font-bold">R3</div>
-                            <div class="w-full h-12 seat-available rounded-lg flex items-center justify-center text-xs font-bold">R4</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="lg:w-1/2 order-1 lg:order-2">
-                <span class="text-green-700 font-black uppercase tracking-widest text-sm">Balanced Layout</span>
-                <h2 class="text-4xl font-bold mt-4 mb-6">Science of Stability</h2>
-                <p class="text-gray-600 text-lg mb-6">Traditional sleeper buses use an uneven $1 \times 2$ configuration, leading to dangerous weight imbalance. Balanza fixes this with a strictly balanced single-row layout on both sides.</p>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="p-4 bg-green-50 rounded-xl">
-                        <h5 class="font-bold text-green-900">Equal Weight</h5>
-                        <p class="text-xs text-green-700">Better road grip and zero tipping risk.</p>
-                    </div>
-                    <div class="p-4 bg-green-50 rounded-xl">
-                        <h5 class="font-bold text-green-900">Noise Control</h5>
-                        <p class="text-xs text-green-700">Acoustically insulated interior cabins.</p>
-                    </div>
-                </div>
+                <button @click="showBuses = true" class="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-lg font-black uppercase tracking-widest transition">
+                    Search
+                </button>
             </div>
         </div>
     </section>
 
-    <section id="experience" class="bg-green-900 py-24 text-white">
-        <div class="container mx-auto px-6 text-center mb-16">
-            <h2 class="text-4xl font-bold mb-4">Airplane-Style Reclining Cabins</h2>
-            <p class="opacity-70 max-w-2xl mx-auto">Skip the cramped berths. Our private cabins feature premium sofa-to-bed recliners with individual charging and climate control.</p>
-        </div>
-        <div class="container mx-auto px-6 grid md:grid-cols-3 gap-8">
-            <div class="group overflow-hidden rounded-3xl relative">
-                <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=600" class="w-full h-80 object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-black/40 p-8 flex flex-col justify-end">
-                    <h4 class="font-bold text-xl">Full Privacy</h4>
-                    <p class="text-sm opacity-80">Personal cabins with sliding partitions.</p>
+    <section v-if="showBuses" class="container mx-auto px-6 py-12">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <div class="lg:w-2/3">
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden mb-6">
+                    <div class="p-6 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div>
+                            <span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-1 rounded uppercase">Safest Choice</span>
+                            <h3 class="text-xl font-bold mt-2">BALANZA LUXE - 9600 Series</h3>
+                            <p class="text-sm text-gray-500">Dual-Side Balanced • Airplane Recliners</p>
+                        </div>
+                        <div class="flex items-center space-x-12">
+                            <div class="text-center">
+                                <p class="text-2xl font-black">21:00</p>
+                                <p class="text-xs text-gray-400 uppercase font-bold">{{search.from || 'Origin'}}</p>
+                            </div>
+                            <div class="text-gray-300 flex flex-col items-center">
+                                <span class="text-[10px] font-bold text-gray-400 italic">08h 30m</span>
+                                <div class="w-20 h-[2px] bg-gray-200 relative">
+                                    <div class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-gray-200"></div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-2xl font-black">05:30</p>
+                                <p class="text-xs text-gray-400 uppercase font-bold">{{search.to || 'Dest'}}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-400 line-through">₹3,200</p>
+                            <p class="text-2xl font-black text-balanza">₹2,500</p>
+                            <button @click="toggleSeatMap" class="mt-2 text-xs font-bold text-orange-500 uppercase border-b-2 border-orange-500">View Seats</button>
+                        </div>
+                    </div>
+
+                    <div v-if="seatMapVisible" class="bg-slate-50 p-8 border-t border-dashed border-gray-200">
+                        <div class="flex flex-col md:flex-row gap-12">
+                            <div class="flex-1">
+                                <h4 class="font-bold mb-6 text-center text-gray-400 uppercase tracking-widest text-xs">Select Your Private Cabin</h4>
+                                <div class="max-w-[300px] mx-auto bg-white p-6 rounded-[40px] border-4 border-gray-200 shadow-inner">
+                                    <div class="flex justify-end mb-10 px-4 text-gray-300"><i class="fas fa-dharmachakra fa-2x"></i></div>
+                                    
+                                    <div class="grid grid-cols-2 gap-x-16 gap-y-4">
+                                        <div v-for="n in 6" :key="'L'+n" 
+                                             @click="selectSeat('L'+n)"
+                                             :class="['seat airplane-cabin h-14 flex items-center justify-center font-bold text-xs', isSelected('L'+n) ? 'selected' : '', isBooked('L'+n) ? 'booked' : '']">
+                                            L{{n}}
+                                        </div>
+                                        <div v-for="n in 6" :key="'R'+n" 
+                                             @click="selectSeat('R'+n)"
+                                             :class="['seat airplane-cabin h-14 flex items-center justify-center font-bold text-xs', isSelected('R'+n) ? 'selected' : '', isBooked('R'+n) ? 'booked' : '']">
+                                            R{{n}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="md:w-1/3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                                <h4 class="font-bold mb-4 border-b pb-2 uppercase text-xs">Booking Details</h4>
+                                <div v-if="selectedSeats.length > 0">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="text-gray-500 text-sm">Cabins:</span>
+                                        <span class="font-bold">{{ selectedSeats.join(', ') }}</span>
+                                    </div>
+                                    <div class="flex justify-between mb-4">
+                                        <span class="text-gray-500 text-sm">Amount:</span>
+                                        <span class="font-bold text-balanza">₹{{ selectedSeats.length * 2500 }}</span>
+                                    </div>
+                                    <button class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600">Proceed to Payment</button>
+                                </div>
+                                <p v-else class="text-gray-400 text-sm italic">Please select a cabin to continue.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="group overflow-hidden rounded-3xl relative">
-                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=600" class="w-full h-80 object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-black/40 p-8 flex flex-col justify-end">
-                    <h4 class="font-bold text-xl">Smart Entertainment</h4>
-                    <p class="text-sm opacity-80">Dedicated screen and high-speed Wi-Fi.</p>
+
+            <div class="lg:w-1/3 space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-balanza">
+                    <h4 class="font-bold text-balanza mb-3"><i class="fas fa-shield-alt mr-2"></i> Safety Innovation</h4>
+                    <p class="text-sm text-gray-600">Our 1x1 layout ensures **Equal Weight Distribution** [cite: 17, 19], preventing the tipping risks found in traditional sleeper buses[cite: 25, 65].</p>
                 </div>
-            </div>
-            <div class="group overflow-hidden rounded-3xl relative">
-                <img src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=600" class="w-full h-80 object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-black/40 p-8 flex flex-col justify-end">
-                    <h4 class="font-bold text-xl">Soft Sleep Tech</h4>
-                    <p class="text-sm opacity-80">Orthopedic mattresses for long journeys.</p>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-balanza">
+                    <h4 class="font-bold text-balanza mb-3"><i class="fas fa-couch mr-2"></i> Recliner Cabins</h4>
+                    <p class="text-sm text-gray-600">Airplane-style reclining sofa pods for a **cramp-free** overnight journey[cite: 16, 53].</p>
                 </div>
             </div>
         </div>
     </section>
+</div>
 
-    <footer class="bg-white pt-20 pb-10 border-t border-gray-100">
-        <div class="container mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16">
-            <div class="col-span-2">
-                <div class="flex items-center space-x-3 mb-6">
-                    <div class="p-2 bg-green-900 rounded-lg text-white">B</div>
-                    <span class="text-2xl font-bold tracking-tight">BALANZA</span>
-                </div>
-                <p class="text-gray-500 max-w-sm">Dedicated to solving India's night-travel safety problem through disruptive engineering and premium comfort[cite: 78].</p>
-            </div>
-            <div>
-                <h5 class="font-bold mb-6">Quick Links</h5>
-                <ul class="space-y-4 text-gray-500 text-sm font-medium">
-                    <li><a href="#" class="hover:text-green-700 transition">About the Concept</a></li>
-                    <li><a href="#" class="hover:text-green-700 transition">Fleet Technology</a></li>
-                    <li><a href="#" class="hover:text-green-700 transition">Safety Standards</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="font-bold mb-6">Support</h5>
-                <ul class="space-y-4 text-gray-500 text-sm font-medium">
-                    <li><a href="#" class="hover:text-green-700 transition">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-green-700 transition">Ticket Cancellation</a></li>
-                    <li><a href="#" class="hover:text-green-700 transition">Contact Us</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="container mx-auto px-6 pt-10 border-t border-gray-100 text-center">
-            <p class="text-xs text-gray-400 font-bold tracking-widest uppercase">Designed for Institute of Product Leadership by Thumati Kowshik[cite: 9, 105].</p>
-        </div>
-    </footer>
+<script>
+    const { createApp } = Vue
+    createApp({
+        data() {
+            return {
+                showBuses: false,
+                seatMapVisible: false,
+                search: { from: '', to: '' },
+                selectedSeats: [],
+                bookedSeats: ['L2', 'R4', 'R5'] // Simulated booked seats
+            }
+        },
+        methods: {
+            toggleSeatMap() { this.seatMapVisible = !this.seatMapVisible },
+            selectSeat(id) {
+                if(this.bookedSeats.includes(id)) return;
+                const index = this.selectedSeats.indexOf(id);
+                if (index > -1) this.selectedSeats.splice(index, 1);
+                else this.selectedSeats.push(id);
+            },
+            isSelected(id) { return this.selectedSeats.includes(id) },
+            isBooked(id) { return this.bookedSeats.includes(id) }
+        }
+    }).mount('#app')
+</script>
 
 </body>
 </html>
